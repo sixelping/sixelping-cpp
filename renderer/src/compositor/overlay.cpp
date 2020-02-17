@@ -13,7 +13,6 @@
 #include <sstream>
 #include <sixelping/renderer/compositor/compositor.h>
 #include <sixelping/renderer/prometheus.h>
-#include <iomanip>
 #include <boost/format.hpp>
 #include <sixelping/renderer/metrics.h>
 #include <prometheus/counter.h>
@@ -78,15 +77,19 @@ namespace sixelping::renderer::compositor::overlay {
 	
 	
 	void write_current_image(sixelping::Image<> &output_image, unsigned x_offset, unsigned y_offset, unsigned width, unsigned height) {
-		auto image = *(last_image.load());
+		Magick::Pixels view(*(last_image.load()));
 		
 		for (unsigned int j = y_offset; j < std::min(y_offset + height, output_image.getHeight()); j++) {
+			
+			const Magick::Quantum *pixels = view.getConst(0, j, output_image.getWidth(), 1);
+			
 			for (unsigned int i = x_offset; i < std::min(x_offset + width, output_image.getWidth()); i++) {
-				auto color = Magick::ColorRGB(image.pixelColor(i, j));
-				uint8_t r = color.red() * 255.0 / double(QuantumRange);
-				uint8_t g = color.green() * 255.0 / double(QuantumRange);
-				uint8_t b = color.blue() * 255.0 / double(QuantumRange);
-				uint8_t a = color.alpha() * 255.0 / double(QuantumRange);
+				unsigned index = 4 * i;
+				
+				uint8_t r = 255 * QuantumScale * pixels[index + 0];
+				uint8_t g = 255 * QuantumScale * pixels[index + 1];
+				uint8_t b = 255 * QuantumScale * pixels[index + 2];
+				uint8_t a = 255 * QuantumScale * pixels[index + 3];
 				
 				if (a > 0) {
 					auto &pix = output_image.getPixel(i, j);
