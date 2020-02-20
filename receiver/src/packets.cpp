@@ -136,9 +136,9 @@ namespace sixelping::receiver::packets {
 		
 		sixelping::receiver::pixels::handle_new_pixel(aconf, x, y, r, g, b);
 		
-		ipv6_addr_t addr = 0;
+		/*ipv6_addr_t addr = 0;
 		memcpy(&addr, ip->src_addr, 16 * sizeof(uint8_t));
-		aconf->metrics.senders[addr]++;
+		aconf->metrics.senders[addr]++;*/
 	}
 	
 	inline void process_packet_icmp(struct app_config *aconf, struct rte_mbuf *pkt, size_t offset, struct rte_ether_hdr *eth, struct rte_ipv6_hdr *ip, struct icmp6_hdr *icmp) {

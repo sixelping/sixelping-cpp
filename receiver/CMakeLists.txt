@@ -17,3 +17,5 @@ target_link_libraries(sixelping_receiver PUBLIC libsixelping)
 target_link_libraries(sixelping_receiver PUBLIC prometheus-cpp::pull)
 set_target_properties(sixelping_receiver PROPERTIES COMPILE_FLAGS ${CMAKE_CXX_FLAGS})
 target_link_libraries(sixelping_receiver PUBLIC Boost::program_options Threads::Threads spdlog::spdlog Boost::thread)
+
+package_add_benchmark(pixelbenchmark tests/pixelbenchmark.cpp)
