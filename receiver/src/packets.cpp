@@ -112,7 +112,7 @@ namespace sixelping::receiver::packets {
 		if (rte_pktmbuf_pkt_len(pkt) > 200)
 			return;
 		
-		uint8_t i, fb = aconf->ipv6_icmp_prefix_cidr / 8;
+		/*uint8_t i, fb = aconf->ipv6_icmp_prefix_cidr / 8;
 		for (i = 0; i < fb && i < 15; i++) {
 			if (unlikely(ip->dst_addr[i] != aconf->ipv6_icmp_prefix[i])) {
 				return;
@@ -128,7 +128,7 @@ namespace sixelping::receiver::packets {
 		
 		if (unlikely((ip->dst_addr[i] & mask) != (aconf->ipv6_icmp_prefix[i] & mask))) {
 			return;
-		}
+		}*/
 		
 		uint16_t x = (ip->dst_addr[7] & 0xF) + ((ip->dst_addr[7] & 0xF0) >> 4) * 10 + (ip->dst_addr[6] & 0xF) * 100 + ((ip->dst_addr[6] & 0xF0) >> 4) * 1000;
 		uint16_t y = (ip->dst_addr[9] & 0xF) + ((ip->dst_addr[9] & 0xF0) >> 4) * 10 + (ip->dst_addr[8] & 0xF) * 100 + ((ip->dst_addr[8] & 0xF0) >> 4) * 1000;
